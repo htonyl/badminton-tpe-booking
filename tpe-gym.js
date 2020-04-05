@@ -6,15 +6,15 @@ const today = new Date().getDate();
 
 const time = ['1700', '1800', '1900', '2000', '2100'];
 const venueSNs = {
-    727: 'Court 1',
-    728: 'Court 2',
-    729: 'Court 3',
-    730: 'Court 4',
-    731: 'Court 5',
-    732: 'Court 6',
-    733: 'Court 7',
-    734: 'Court 8',
-    735: 'Court 9',
+    727: 'Court 01',
+    728: 'Court 02',
+    729: 'Court 03',
+    730: 'Court 04',
+    731: 'Court 05',
+    732: 'Court 06',
+    733: 'Court 07',
+    734: 'Court 08',
+    735: 'Court 09',
     736: 'Court 10'
 };
 
@@ -52,9 +52,19 @@ const promise = Object.keys(venueSNs).map(venue => {
 });
 
 Promise.all(promise)
-.then(x=> {
-    let resultStr = result.map(item => {
-        return `4/${item.date} ${item.time} ${item.court}`;
+.then(_ => {
+    const resultObj = {};
+    result.forEach(r => {
+        let key = `${month}/${r.date} ${r.time}`;
+        if (resultObj[key] === undefined) {
+            resultObj[key] = [r.court];
+        } else {
+            resultObj[key].push(r.court);
+        }
+    })
+    let resultStr = Object.keys(resultObj).map(key => {
+        let courts = resultObj[key].sort();
+        return `${key}: ${courts.join(", ")}`;
     });
     resultStr.sort();
     resultStr.forEach(r => console.log(r));
